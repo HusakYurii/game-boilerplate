@@ -3,24 +3,26 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
+
+
 const htmlWebpackPluginConfig = {
-  "title": "TS PIXI BOILERPLATE",
+  "title": "Game Boilerplate",
   "meta": {
     "viewport": "initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no",
     "Content-Type": { "http-equiv": "Content-Type", "content": "text/html; charset=utf-8" }
   },
   "filename": "index.html",
-  "template": path.resolve(__dirname, "libs/html/index.html")
+  "template": "./libs/html/index.html"
 };
 
 const CopyPluginConfig = [{
-  from: path.resolve(__dirname, "assets"),
+  from: "./assets",
   to: "assets",
 }];
 
 module.exports = {
   mode: "production",
-  entry: "./src/index.ts",
+  entry: "./src/index.js",
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist/")
@@ -33,14 +35,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: [{
-          loader: 'ts-loader',
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
           options: {
-            configFile: "tsconfig.webpack.json"
+            presets: ["@babel/preset-env"]
           }
-        }],
-        exclude: /(node_modules|bower_components|assets)/
+        }
       }
     ]
   }

@@ -1,31 +1,41 @@
 const path = require("path");
 
+const project = {
+  path: process.env.PROJECT_FOLDER,
+  port: process.env.PROJECT_PORT
+};
+
 module.exports = {
   mode: "development",
   devtool: "source-map",
-  entry: "./src/index.ts",
+  entry:  "./src/index.js",
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "./dist/")
   },
   devServer: {
-    contentBase: "./dist/",
+    contentBase: path.resolve(__dirname, "./dist/"),
     compress: false,
     hot: false,
     liveReload: false,
-    port: 8000
+    port: 8080
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: [{
-          loader: 'ts-loader',
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
           options: {
-            configFile: "tsconfig.webpack.json"
+            presets: ["@babel/preset-env"]
           }
-        }],
-        exclude: /(node_modules|bower_components|assets)/
+        }
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       }
     ]
   }

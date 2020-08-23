@@ -1,7 +1,5 @@
 
-export class ResourcesParser implements Parser.IResourcesParser {
-    rules: Parser.IParserRules;
-
+export class ResourcesParser {
     constructor() {
         this.rules = {
             json: new RegExp(/json$/, "i"),
@@ -10,8 +8,8 @@ export class ResourcesParser implements Parser.IResourcesParser {
         };
     }
 
-    parseResources(resources: Parser.IParserInput): Parser.IParserResult {
-        const keys: string[] = Object.keys(resources);
+    parseResources(resources) {
+        const keys = Object.keys(resources);
 
         return {
             ...this._parseSprites(keys, resources),
@@ -19,8 +17,8 @@ export class ResourcesParser implements Parser.IResourcesParser {
         };
     }
 
-    _parseSprites(keys: string[], resources: Parser.IParserInput): Parser.IParserResult {
-        return keys.reduce((acc: Parser.IParserResult, key: string) => {
+    _parseSprites(keys, resources) {
+        return keys.reduce((acc, key) => {
             if (this.rules.img.test(resources[key].extension)) {
                 acc[key] = resources[key].texture;
             }
@@ -28,12 +26,11 @@ export class ResourcesParser implements Parser.IResourcesParser {
         }, {});
     }
 
-    _parseSpritesheet(keys: string[], resources: Parser.IParserInput): Parser.IParserResult {
-        return keys.reduce((acc: Parser.IParserResult, key: string) => {
+    _parseSpritesheet(keys, resources) {
+        return keys.reduce((acc, key) => {
             if (this.rules.json.test(resources[key].extension)) {
                 const { textures = [] } = resources[key];
-                (<any>Object).entries(textures)
-                    //@ts-ignore
+                Object.entries(textures)
                     .forEach(([name, texture]) => (acc[name] = texture));
             }
             return acc

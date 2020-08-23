@@ -1,17 +1,12 @@
 
-import { StateMachine } from "../libs/fsm/StateMachine";
 import { Application, AnimatedSprite, Container } from "pixi.js";
-//@ts-ignore
 import assets from "../assets/assets.json";
 
-const view: HTMLCanvasElement = (document.body.querySelector("#game-canvas") as HTMLCanvasElement);
+const view = document.body.querySelector("#game-canvas");
 const app = new Application({ view });
 
 class Hero extends Container {
-    private _heroAnimations: AnimatedSprite[];
-    private _currentAnimation: AnimatedSprite;
-
-    constructor(heroAnimations: AnimatedSprite[]) {
+    constructor(heroAnimations) {
         super();
         heroAnimations.forEach(animation => {
             animation.stop();
@@ -23,27 +18,28 @@ class Hero extends Container {
         this._heroAnimations = heroAnimations;
     }
 
-    hide(): void {
+    hide() {
         this._currentAnimation.stop();
         this._currentAnimation.visible = false;
     }
 
-    show(): void {
+    show() {
         this._currentAnimation.visible = true;
         this._currentAnimation.play();
     }
 
-    play(name: "down" | "left" | "right" | "up"): void {
+    /**
+     * @param {"down" | "left" | "right" | "up"} name 
+     */
+    play(name) {
         this.hide();
-        this._currentAnimation = (
-            this._heroAnimations
-                .find((animation) => animation.name === name) as AnimatedSprite
-        );
+        this._currentAnimation = this._heroAnimations
+            .find((animation) => animation.name === name);
         this.show();
     }
 }
 
-const getAnimations = (): AnimatedSprite[] => {
+const getAnimations = () => {
     const animations = [
         { animationName: "down", baseName: "tile", start: 130, amount: 9 },
         { animationName: "left", baseName: "tile", start: 117, amount: 9 },
@@ -51,7 +47,7 @@ const getAnimations = (): AnimatedSprite[] => {
         { animationName: "up", baseName: "tile", start: 104, amount: 9 }
     ];
 
-    return animations.reduce((collection: Array<AnimatedSprite>, config) => {
+    return animations.reduce((collection, config) => {
         const { animationName, baseName, start, amount } = config;
 
         const tileNames = Array.from({ length: amount })
@@ -73,14 +69,10 @@ const onAssetsLoaded = () => {
     const hero = new Hero(heroAnimations);
     hero.position.set(200, 200);
     hero.scale.set(2);
-    hero.play("right");
+    hero.play("left");
 
     app.stage.addChild(hero);
 }
 
 app.loader.add(assets.sprites);
 app.loader.load(onAssetsLoaded);
-
-const fsm = new StateMachine<PIXI.Application>(app); 
-fsm.changeStateTo("");
-

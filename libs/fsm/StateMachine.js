@@ -1,20 +1,15 @@
 import { NullState } from "./NullState";
 
-export class StateMachine<T> implements FSM.IStateMachine {
-    target: T;
-    states: FSM.IState[];
-    currentState?: FSM.IState;
-    previousState?: FSM.IState;
-
-    constructor(target: T) {
+export class StateMachine {
+    constructor(target) {
         this.target = target;
         this.states = [];
         this.currentState = undefined;
         this.previousState = undefined;
     }
 
-    changeStateTo(name: string): void {
-        const onExitFinished = (): void => {
+    changeStateTo(name) {
+        const onExitFinished = () => {
             const newState = this.getStateByName(name);
             newState.onEnterState();
             this.swapStates(newState);
@@ -28,14 +23,14 @@ export class StateMachine<T> implements FSM.IStateMachine {
         }
     }
 
-    registerStates(states: FSM.IState | FSM.IState[]): void {
+    registerStates(states) {
         if (!Array.isArray(states)) {
             states = [states];
         }
         states.forEach((state) => this.states.push(state));
     }
 
-    getStateByName(name: string): FSM.IState {
+    getStateByName(name) {
         const state = this.states.find((state) => state.name === name);
         if (!state) {
             return new NullState(name, this);
@@ -43,13 +38,13 @@ export class StateMachine<T> implements FSM.IStateMachine {
         return state;
     }
 
-    swapStates(newState: FSM.IState): void {
+    swapStates(newState) {
         this.previousState = this.currentState;
         this.currentState = newState;
         StateMachine.log(this.currentState, this.previousState);
     }
 
-    static log(currState?: FSM.IState, previousState?: FSM.IState): void {
+    static log(currState, previousState) {
         console.log(`%c State was change!
             previous state: ${previousState && previousState.name}
             current state: ${currState && currState.name}`, 'color: white; background: black; font-size: 15px');

@@ -1,14 +1,9 @@
 
 import { AbstractLayer } from "./AbstractLayer";
 
-export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLayer {
-    private _isClicked: boolean
-    private _pointersId: Array<number>;
-    private _viewPortSizes: { width: number; height: number };
-    private _pointerStartPos: { x: number; y: number };
-    private _moveBy: { dx: number; dy: number };
+export class DraggableLayer extends AbstractLayer {
 
-    constructor({ viewPortSizes, ...layerData }: Layer.IDraggable) {
+    constructor({ viewPortSizes, ...layerData }) {
         super(layerData);
 
         this._isClicked = false;
@@ -27,18 +22,18 @@ export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLay
     /**
      * Activate interactivity of the layer
      */
-    activate(): void {
+    activate() {
         this.interactive = true;
     }
 
     /**
      * Deactivate interactivity of the layer
      */
-    deactivate(): void {
+    deactivate() {
         this.interactive = false;
     }
 
-    _onPointerDown({ data }: PIXI.InteractionEvent): void {
+    _onPointerDown({ data }) {
         if (this._isClicked) {
             return;
         }
@@ -49,7 +44,7 @@ export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLay
         this._pointerStartPos = data.getLocalPosition(this);
     }
 
-    _onPointerMove({ data }: PIXI.InteractionEvent): void {
+    _onPointerMove({ data }) {
         if (!this._isClicked) {
             return;
         }
@@ -57,7 +52,7 @@ export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLay
         this._calculateMove(data);
     }
 
-    _onPointerUp({ data }: PIXI.InteractionEvent): void {
+    _onPointerUp({ data }) {
         if (this._pointersId.indexOf(data.pointerId) !== -1) {
             return;
         }
@@ -66,7 +61,7 @@ export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLay
         this._isClicked = false;
     }
 
-    _calculateMove(data: PIXI.InteractionData): void {
+    _calculateMove(data) {
         const endPos = data.getLocalPosition(this);
         this._moveBy = {
             dx: endPos.x - this._pointerStartPos.x,
@@ -92,11 +87,11 @@ export class DraggableLayer extends AbstractLayer implements Layer.IDraggableLay
         );
     }
 
-    update(dt: number): void {
+    update(dt) {
         this._move();
     }
 
-    resize(sizes: { [key: string]: number }): void { };
+    resize(sizes) { };
 
-    cleanup(): void { };
+    cleanup() { };
 }

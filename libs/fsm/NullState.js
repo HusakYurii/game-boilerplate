@@ -1,14 +1,15 @@
 import { AbstractState } from "./AbstractState";
 
 export class NullState extends AbstractState {
-    constructor(name: string, fsm: FSM.IStateMachine) {
+    constructor(name, fsm) {
         super(name, fsm);
     }
 
-    onEnterState(): void {
+    onEnterState() {
         throw new Error(`${this.name} state was not fund, NullState was used`);
     }
-    onExitState(onFinish: Function): void {
-        throw new Error("Method not implemented.");
+
+    onExitState(onFinish) {
+        throw new Error(`${this.name} state was not fund, NullState was used`);
     }
 }
