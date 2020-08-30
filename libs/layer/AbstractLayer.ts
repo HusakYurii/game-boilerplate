@@ -1,13 +1,11 @@
-
-import { Container } from "pixi.js";
+import { Container } from 'pixi.js';
 
 export abstract class AbstractLayer extends Container implements Layer.ILayer {
-
     name: string;
     zIndex: number;
-    config: { [key: string]: any };
+    config: Record<string, unknown>;
 
-    constructor({ name, zIndex, ...config }: Layer.IData) {
+    constructor({ name, zIndex, config }: Layer.IData) {
         super();
 
         this.name = name;

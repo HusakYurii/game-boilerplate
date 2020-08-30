@@ -1,4 +1,5 @@
-import { AbstractState } from "./AbstractState";
+import { AbstractState } from './AbstractState';
+import FSM = Core.FSM;
 
 export class NullState extends AbstractState {
     constructor(name: string, fsm: FSM.IStateMachine) {
@@ -8,7 +9,9 @@ export class NullState extends AbstractState {
     onEnterState(): never {
         throw new Error(`${this.name} state was not fund, NullState was used`);
     }
-    onExitState(onFinish: () => void): never {
-        throw new Error("Method not implemented.");
+
+    // eslint-disable-next-line
+    public onExitState(onFinish: () => void): never {
+        throw new Error('Method not implemented.');
     }
 }
