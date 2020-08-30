@@ -2,7 +2,7 @@ import { NullState } from './NullState';
 import FSM = Core.FSM;
 
 export class StateMachine<T> implements FSM.IStateMachine {
-    target: unknown;
+    target: T;
     states: FSM.IState[];
     currentState?: FSM.IState;
     previousState?: FSM.IState;
