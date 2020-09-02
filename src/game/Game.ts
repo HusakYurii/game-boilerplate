@@ -1,8 +1,8 @@
 import { Model } from './Model';
 import { Scene } from './Scene';
-import { Ticker } from '../../libs/Ticker';
-import { ResizeManager } from '../../libs/ResizeManager';
-import { UIBuilder } from '../../libs/UIBuilder';
+import { Ticker } from '@libs/Ticker';
+import { ResizeManager } from '@libs/ResizeManager';
+import { UIBuilder } from '@libs/UIBuilder';
 
 import TWEEN from '@tweenjs/tween.js';
 
