@@ -1,9 +1,9 @@
-import { AssetsPreloader } from '../libs/AssetsPreloader';
+import { AssetsPreloader } from '@libs/AssetsPreloader';
 import { Application } from 'pixi.js';
-import assets from '../assets';
+import assets from '@assets';
 
-import { GameConfig } from './configs/GameConfig';
-import { Game } from './game/Game';
+import { GameConfig } from '@configs/GameConfig';
+import { Game } from '@game/Game';
 const gameConfig = new GameConfig();
 const { application, gameCanvasId } = gameConfig;
 

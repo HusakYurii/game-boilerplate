@@ -21,7 +21,7 @@
         "paths": {
             "@libs/*": ["libs/*"],
             "@game/*": ["src/game/*"],
-            "@config/*": ["src/configs/*"],
+            "@configs/*": ["src/configs/*"],
             "@assets": ["assets.ts"],
             "@fsm/*": ["src/fsm/*"]
         }

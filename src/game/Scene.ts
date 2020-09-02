@@ -1,20 +1,9 @@
-import { AbstractLayer } from '../../libs/layer';
+import { AbstractLayer } from '@libs/layer';
+import { UIBuilder } from '@libs/UIBuilder';
 import Layer = Core.Layer;
 
-class SceneLayer extends AbstractLayer {
-    public resize(): void {
-        /*do nothing here for now*/
-    }
-    public update(): void {
-        /*do nothing here for now*/
-    }
-    public cleanup(): void {
-        /*do nothing here for now*/
-    }
-}
-
 type LayersNames = 'Background' | 'Game' | 'UI' | 'Transition';
-type LayersCollection = Map<LayersNames, SceneLayer>;
+type LayersCollection = Map<LayersNames, PIXI.Container>;
 
 export class Scene extends AbstractLayer {
     private layers: LayersCollection;
@@ -25,18 +14,17 @@ export class Scene extends AbstractLayer {
         this.sortableChildren = true;
         this.layers = new Map();
 
-        this.layers.set('Transition', this.addChild(new SceneLayer({ name: 'Transition', zIndex: 300, config: {} })));
-        this.layers.set('Background', this.addChild(new SceneLayer({ name: 'Background', zIndex: 0, config: {} })));
-        this.layers.set('Game', this.addChild(new SceneLayer({ name: 'Game', zIndex: 100, config: {} })));
-        this.layers.set('UI', this.addChild(new SceneLayer({ name: 'UI', zIndex: 200, config: {} })));
+        this.layers.set('Transition', this.addChild(Scene.createLayer('Transition', 300)));
+        this.layers.set('Background', this.addChild(Scene.createLayer('Background', 1)));
+        this.layers.set('Game', this.addChild(Scene.createLayer('Game', 100)));
+        this.layers.set('UI', this.addChild(Scene.createLayer('UI', 200)));
     }
 
-    public getLayer(name: LayersNames): SceneLayer {
-        const layer = this.layers.get(name);
-        if (!layer) {
+    public getLayer(name: LayersNames): PIXI.Container {
+        if (!this.layers.has(name)) {
             throw new Error(`Scene: You are a little bastard, the layer '${name}' does not exist in Scene list!`);
         }
-        return layer;
+        return this.layers.get(name) as PIXI.Container;
     }
 
     public resize(): void {
@@ -47,5 +35,9 @@ export class Scene extends AbstractLayer {
     }
     public cleanup(): void {
         /*do nothing here for now*/
+    }
+
+    static createLayer(name: LayersNames | string, zIndex: number): PIXI.Container {
+        return UIBuilder.createContainer({ name: name, modifiers: { zIndex } });
     }
 }
