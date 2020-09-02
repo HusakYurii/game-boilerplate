@@ -15,7 +15,7 @@ export class Scene extends AbstractLayer {
         this.layers = new Map();
 
         this.layers.set('Transition', this.addChild(Scene.createLayer('Transition', 300)));
-        this.layers.set('Background', this.addChild(Scene.createLayer('Background', 0)));
+        this.layers.set('Background', this.addChild(Scene.createLayer('Background', 1)));
         this.layers.set('Game', this.addChild(Scene.createLayer('Game', 100)));
         this.layers.set('UI', this.addChild(Scene.createLayer('UI', 200)));
     }
